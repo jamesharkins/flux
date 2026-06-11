@@ -41,7 +41,7 @@ impl Default for Settings {
             pressure_mode: PressureMode::ClearWith(0.0),
             diffusion_iterations: 3,
             pressure_iterations: 19,
-            color_mode: ColorMode::Preset(ColorPreset::Original),
+            color_mode: ColorMode::Preset(ColorPreset::Kelp),
             line_length: 450.0,
             line_width: 9.0,
             line_begin_offset: 0.4,
@@ -121,6 +121,7 @@ pub enum ColorPreset {
     Plasma,
     Poolside,
     Freedom,
+    Kelp,
 }
 
 impl ColorPreset {
@@ -128,6 +129,7 @@ impl ColorPreset {
         match self {
             ColorPreset::Plasma => Some(COLOR_SCHEME_PLASMA),
             ColorPreset::Poolside => Some(COLOR_SCHEME_POOLSIDE),
+            ColorPreset::Kelp => Some(COLOR_SCHEME_KELP),
             _ => None,
         }
     }
@@ -159,4 +161,16 @@ pub static COLOR_SCHEME_POOLSIDE: [f32; 24] = [
     188.0 / 255.0, 228.0 / 255.0, 244.0 / 255.0, 1.0,
     124.0 / 255.0, 220.0 / 255.0, 236.0 / 255.0, 1.0,
     156.0 / 255.0, 208.0 / 255.0, 236.0 / 255.0, 1.0,
+];
+
+// Kelp Digital — an analogous palette of greens centred on the brand colour
+// #A6CE39 (166, 206, 57).
+#[rustfmt::skip]
+pub static COLOR_SCHEME_KELP: [f32; 24] = [
+    62.0  / 255.0,  94.0  / 255.0, 18.0 / 255.0, 1.0, // deep olive
+    94.0  / 255.0, 138.0  / 255.0, 28.0 / 255.0, 1.0, // forest green
+    166.0 / 255.0, 206.0  / 255.0, 57.0 / 255.0, 1.0, // kelp (brand)
+    191.0 / 255.0, 224.0  / 255.0, 92.0 / 255.0, 1.0, // light lime
+    135.0 / 255.0, 178.0  / 255.0, 43.0 / 255.0, 1.0, // mid green
+    111.0 / 255.0, 160.0  / 255.0, 31.0 / 255.0, 1.0, // grass green
 ];
