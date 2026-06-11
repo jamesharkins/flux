@@ -359,21 +359,6 @@ view model =
                         ]
                         [ Html.text "🄲 Controls" ]
                     ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://github.com/sandydoo/" ]
-                        [ Html.text "© 2022 Sander Melnikov" ]
-                    ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://x.com/sandydoo/" ]
-                        [ Html.text "Follow me on X" ]
-                    ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://sandydoo.gumroad.com/l/flux" ]
-                        [ Html.text "Buy this screensaver" ]
-                    ]
                 ]
             ]
         ]

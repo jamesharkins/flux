@@ -168,8 +168,8 @@ void main() {
   vLineWidth = widthBoost * widthBoost * (3.0 - widthBoost * 2.0);
 
   vec3 color;
-  float colorMomentumBoost = 3.0;
-  float colorDeltaBoost = 90.0;
+  float colorMomentumBoost = 2.5;
+  float colorDeltaBoost = 60.0;
 
   switch (colorMode) {
     // Original
@@ -194,5 +194,7 @@ void main() {
     = iColorVelocity * (1.0 - colorMomentumBoost * deltaTime)
     + (color.rgb - iColor.rgb) * colorDeltaBoost * deltaTime;
 
-  vColor = vec4(clamp(iColor.rgb + deltaTime * vColorVelocity, 0.0, 1.0), widthBoost);
+  // Use the eased width (smoothstep) for opacity so the WebGL2 backend
+  // fades filaments identically to the WebGPU one.
+  vColor = vec4(clamp(iColor.rgb + deltaTime * vColorVelocity, 0.0, 1.0), vLineWidth);
 }

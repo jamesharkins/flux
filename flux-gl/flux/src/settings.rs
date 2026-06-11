@@ -43,8 +43,8 @@ impl Default for Settings {
             color_mode: ColorMode::Preset(ColorPreset::Kelp),
             line_length: 550.0,
             line_width: 10.0,
-            line_begin_offset: 0.4,
-            line_variance: 0.45,
+            line_begin_offset: 0.46,
+            line_variance: 0.40,
             grid_spacing: 15,
             view_scale: 1.6,
             noise_channels: vec![
@@ -55,12 +55,12 @@ impl Default for Settings {
                 },
                 Noise {
                     scale: 15.0,
-                    multiplier: 0.7,
+                    multiplier: 0.55,
                     offset_increment: 0.0015 * 6.0,
                 },
                 Noise {
                     scale: 30.0,
-                    multiplier: 0.5,
+                    multiplier: 0.38,
                     offset_increment: 0.0015 * 12.0,
                 },
             ],

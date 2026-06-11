@@ -151,8 +151,8 @@ fn main(
   let opacity = smoothstep(0.0, 1.0, width_boost);
 
   var color: vec3<f32>;
-  var color_momentum_boost = 3.0;
-  var color_delta_boost = 90.0;
+  var color_momentum_boost = 2.5;
+  var color_delta_boost = 60.0;
 
   switch uniforms.color_mode {
     // Original
