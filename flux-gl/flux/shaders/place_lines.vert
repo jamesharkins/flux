@@ -156,16 +156,24 @@ void main() {
   float velocityDeltaBoost = mix(3.0, 25.0, 1.0 - variance);
   float momentumBoost = mix(3.0, 5.0, variance);
 
+  // Depth stratification (see place_lines.comp.wgsl): a smooth static field
+  // makes "near" lines longer/wider/brighter and "far" lines recede, giving
+  // the flat line cloud a sense of volume.
+  float depth = 0.5 + 0.5 * snoise(vec3(basepoint * 2.5, 11.0));
+  float depthLength = mix(0.72, 1.22, depth);
+  float depthWidth = mix(0.6, 1.2, depth);
+  float depthOpacity = mix(0.45, 1.0, depth);
+
   vVelocityVector
     = (1.0 - deltaTime * momentumBoost) * iVelocityVector
-    + (uLineLength * velocity - iEndpointVector) * velocityDeltaBoost * deltaTime;
+    + (uLineLength * depthLength * velocity - iEndpointVector) * velocityDeltaBoost * deltaTime;
 
   vEndpointVector = iEndpointVector + deltaTime * vVelocityVector;
 
   // Basically, smoothstep(0.0, 0.4, length(velocity));
-  // Maybe width and opacity should be on different easings.
   float widthBoost = clamp(2.5 * length(velocity), 0.0, 1.0);
-  vLineWidth = widthBoost * widthBoost * (3.0 - widthBoost * 2.0);
+  float widthEase = widthBoost * widthBoost * (3.0 - widthBoost * 2.0);
+  vLineWidth = widthEase * depthWidth;
 
   vec3 color;
   float colorMomentumBoost = 2.5;
@@ -194,7 +202,7 @@ void main() {
     = iColorVelocity * (1.0 - colorMomentumBoost * deltaTime)
     + (color.rgb - iColor.rgb) * colorDeltaBoost * deltaTime;
 
-  // Use the eased width (smoothstep) for opacity so the WebGL2 backend
-  // fades filaments identically to the WebGPU one.
-  vColor = vec4(clamp(iColor.rgb + deltaTime * vColorVelocity, 0.0, 1.0), vLineWidth);
+  // Use the eased width (smoothstep) scaled by depth for opacity so the
+  // WebGL2 backend fades filaments identically to the WebGPU one.
+  vColor = vec4(clamp(iColor.rgb + deltaTime * vColorVelocity, 0.0, 1.0), widthEase * depthOpacity);
 }

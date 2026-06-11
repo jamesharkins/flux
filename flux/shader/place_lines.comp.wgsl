@@ -139,16 +139,25 @@ fn main(
   let velocity_delta_boost = mix(3.0, 25.0, 1.0 - variance);
   let momentum_boost = mix(3.0, 5.0, variance);
 
+  // Depth stratification. A smoothly-varying static field gives the flat line
+  // cloud a sense of volume: "near" lines are longer, wider and brighter,
+  // "far" lines are shorter, thinner and recede. The three cues covary with a
+  // single depth value over coherent regions, so the eye reads it as
+  // perspective rather than random size variation.
+  let depth = 0.5 + 0.5 * snoise(vec3(basepoint * 2.5, 11.0));
+  let depth_length = mix(0.72, 1.22, depth);
+  let depth_width = mix(0.6, 1.2, depth);
+  let depth_opacity = mix(0.45, 1.0, depth);
+
   let new_velocity = (1.0 - uniforms.delta_time * momentum_boost) * line.velocity
-    + (uniforms.line_length * velocity - line.endpoint) * velocity_delta_boost * uniforms.delta_time;
+    + (uniforms.line_length * depth_length * velocity - line.endpoint) * velocity_delta_boost * uniforms.delta_time;
 
   let new_endpoint = line.endpoint + uniforms.delta_time * new_velocity;
 
   // Basically, smoothstep(0.0, 0.4, length(velocity));
-  // Maybe width and opacity should be on different easings.
-  let width_boost = saturate(2.5 * length(velocity));
-  let new_line_width = smoothstep(0.0, 1.0, width_boost);
-  let opacity = smoothstep(0.0, 1.0, width_boost);
+  let width_ease = smoothstep(0.0, 1.0, saturate(2.5 * length(velocity)));
+  let new_line_width = width_ease * depth_width;
+  let opacity = width_ease * depth_opacity;
 
   var color: vec3<f32>;
   var color_momentum_boost = 2.5;
