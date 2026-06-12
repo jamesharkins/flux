@@ -20,6 +20,18 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v30
 
+      # Cache the Nix store between runs so heavy dependencies (wgpu, naga, the
+      # Rust toolchain, wasm tooling) are restored instead of recompiled on
+      # every push. Only the changed crate and the final link then rebuild,
+      # which cuts build time substantially. The first run after this is added
+      # is still cold (it populates the cache); later runs are much faster.
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v5
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', 'flake.lock', '**/Cargo.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 5G
+
       - name: Build app
         run: nix build .#web
 
