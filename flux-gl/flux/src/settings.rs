@@ -40,11 +40,11 @@ impl Default for Settings {
             pressure_mode: PressureMode::Retain,
             diffusion_iterations: 3,
             pressure_iterations: 19,
-            color_mode: ColorMode::Preset(ColorPreset::Original),
+            color_mode: ColorMode::Preset(ColorPreset::Kelp),
             line_length: 550.0,
             line_width: 10.0,
-            line_begin_offset: 0.4,
-            line_variance: 0.45,
+            line_begin_offset: 0.46,
+            line_variance: 0.40,
             grid_spacing: 15,
             view_scale: 1.6,
             noise_channels: vec![
@@ -55,12 +55,12 @@ impl Default for Settings {
                 },
                 Noise {
                     scale: 15.0,
-                    multiplier: 0.7,
+                    multiplier: 0.55,
                     offset_increment: 0.0015 * 6.0,
                 },
                 Noise {
                     scale: 30.0,
-                    multiplier: 0.5,
+                    multiplier: 0.38,
                     offset_increment: 0.0015 * 12.0,
                 },
             ],
@@ -103,6 +103,7 @@ pub enum ColorPreset {
     Plasma,
     Poolside,
     Freedom,
+    Kelp,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -119,6 +120,7 @@ pub fn color_wheel_from_mode(color_mode: &ColorMode) -> [f32; 24] {
             ColorPreset::Plasma => COLOR_SCHEME_PLASMA,
             ColorPreset::Poolside => COLOR_SCHEME_POOLSIDE,
             ColorPreset::Freedom => COLOR_SCHEME_FREEDOM,
+            ColorPreset::Kelp => COLOR_SCHEME_KELP,
             _ => [0.0; 24],
         },
         _ => [0.0; 24],
@@ -151,4 +153,15 @@ pub static COLOR_SCHEME_FREEDOM: [f32; 24] = [
     1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
     1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
     1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
+];
+// Kelp Digital — an analogous palette of greens centred on the brand colour
+// #A6CE39 (166, 206, 57).
+#[rustfmt::skip]
+pub static COLOR_SCHEME_KELP: [f32; 24] = [
+    62.0  / 255.0,  94.0  / 255.0, 18.0 / 255.0, 1.0, // deep olive
+    94.0  / 255.0, 138.0  / 255.0, 28.0 / 255.0, 1.0, // forest green
+    166.0 / 255.0, 206.0  / 255.0, 57.0 / 255.0, 1.0, // kelp (brand)
+    191.0 / 255.0, 224.0  / 255.0, 92.0 / 255.0, 1.0, // light lime
+    135.0 / 255.0, 178.0  / 255.0, 43.0 / 255.0, 1.0, // mid green
+    111.0 / 255.0, 160.0  / 255.0, 31.0 / 255.0, 1.0, // grass green
 ];

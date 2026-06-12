@@ -89,6 +89,7 @@ type ColorPreset
     = Original
     | Plasma
     | Poolside
+    | Kelp
 
 
 type alias Noise =
@@ -110,7 +111,7 @@ defaultSettings =
     , pressureMode = ClearWith 0.0
     , diffusionIterations = 3
     , pressureIterations = 19
-    , colorMode = Preset Original
+    , colorMode = Preset Kelp
     , lineLength = 450.0
     , lineWidth = 9.0
     , lineBeginOffset = 0.4
@@ -358,21 +359,6 @@ view model =
                         ]
                         [ Html.text "🄲 Controls" ]
                     ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://github.com/sandydoo/" ]
-                        [ Html.text "© 2022 Sander Melnikov" ]
-                    ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://x.com/sandydoo/" ]
-                        [ Html.text "Follow me on X" ]
-                    ]
-                , Html.li []
-                    [ Html.a
-                        [ HA.href "https://sandydoo.gumroad.com/l/flux" ]
-                        [ Html.text "Buy this screensaver" ]
-                    ]
                 ]
             ]
         ]
@@ -407,7 +393,8 @@ viewSettings settings =
             ]
             [ Html.div [ HA.style "white-space" "nowrap" ] <|
                 List.map (viewGalleryItem settings)
-                    [ { name = "Original", colorMode = Preset Original, previewImage = "colors/original.png" }
+                    [ { name = "Kelp", colorMode = Preset Kelp, previewImage = "colors/kelp.png" }
+                    , { name = "Original", colorMode = Preset Original, previewImage = "colors/original.png" }
                     , { name = "Plasma", colorMode = Preset Plasma, previewImage = "colors/plasma.png" }
                     , { name = "Poolside", colorMode = Preset Poolside, previewImage = "colors/poolside.png" }
                     , { name = "Gumdrop", colorMode = ImageFile "colors/gumdrop.png", previewImage = "colors/gumdrop.png" }
@@ -942,6 +929,9 @@ colorPresetToString colorPreset =
 
         Poolside ->
             "Poolside"
+
+        Kelp ->
+            "Kelp"
 
 
 encodeNoise : Noise -> Encode.Value
